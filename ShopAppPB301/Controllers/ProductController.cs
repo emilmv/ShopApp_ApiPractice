@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopAppPB301.DTOs.ProductDTOs;
 using ShopAppPB301.Entities;
 
 namespace ShopAppPB301.Controllers
@@ -52,12 +53,19 @@ namespace ShopAppPB301.Controllers
             return StatusCode(StatusCodes.Status200OK, existProduct);
         }
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductCreateDTO productDTO)
         {
-            if (product is null) return StatusCode(StatusCodes.Status400BadRequest);
-            if (Products.Any(p => p.Name.Trim().ToLower() == product.Name.Trim().ToLower())) return StatusCode(StatusCodes.Status400BadRequest);
-            Products.Add(product);
-            return StatusCode(StatusCodes.Status201Created, product);
+            if (productDTO is null) return StatusCode(StatusCodes.Status400BadRequest);
+            if (Products.Any(p => p.Name.Trim().ToLower() == productDTO.Name.Trim().ToLower())) return StatusCode(StatusCodes.Status400BadRequest);
+            Product newProduct = new()
+            {
+                Id=5, //Requires database algorithm for unique ID
+                Name=productDTO.Name,
+                Description=productDTO.Description,
+                Price=productDTO.Price,
+            };
+            Products.Add(newProduct);
+            return StatusCode(StatusCodes.Status201Created, productDTO);
         }
         [HttpPut("{id}")]
         public IActionResult Update(int id, Product product)
