@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopAppPB301.DTOs.ProductDTOs;
 using ShopAppPB301.Entities;
+using ShopAppPB301.Mappers;
 
 namespace ShopAppPB301.Controllers
 {
@@ -64,7 +65,7 @@ namespace ShopAppPB301.Controllers
                 Description=productDTO.Description,
                 Price=productDTO.Price,
             };
-            Products.Add(newProduct);
+            Products.Add(ProductMapper.ProductDTOToProduct(productDTO));
             return StatusCode(StatusCodes.Status201Created, productDTO);
         }
         [HttpPut("{id}")]
